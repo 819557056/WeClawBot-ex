@@ -1,43 +1,41 @@
 # WeClawBot-ex
 
-OpenClaw Weixin demo plugin fork for multi-account QR login and a local web console.
+[简体中文](./README.zh_CN.md)
 
-This repository is not a standalone bot runtime. It is an OpenClaw plugin source repository.
+Multi-account extension for **WeChat ClawBot** (the official WeChat AI bot plugin by Tencent).
 
-## What It Does
+The official ClawBot only supports one QR code and one user at a time. **WeClawBot-ex removes this limit** — multiple WeChat accounts can scan, log in, and chat with your AI agent simultaneously, all managed through a local web console.
 
-- Replaces the stock `openclaw-weixin` plugin with a forked build
-- Adds a local HTTP/H5 control page for QR login and account status
-- Supports multiple saved Weixin accounts in one OpenClaw Gateway
-- Shows `errcode = -14` cooldown state in the UI
-- Keeps DM sessions isolated with `session.dmScope = "per-account-channel-peer"`
+<img src="./docs/weixin-claude-demo.jpg" alt="WeChat ClawBot chat demo" width="320" />
 
-## Prerequisites
+## What This Adds Over the Official ClawBot
+
+| | Official ClawBot | WeClawBot-ex |
+|---|---|---|
+| Concurrent accounts | 1 | Unlimited |
+| QR code management | CLI only | Local web console |
+| Channel status overview | None | Dashboard with live stats |
+| Cooldown diagnostics | None | `-14` errcode visibility |
+| Session isolation | Shared | Per-account-per-user |
+
+## Quick Start
+
+### Prerequisites
 
 - Node.js >= 22
-- OpenClaw installed and `openclaw` CLI available
-- A local OpenClaw Gateway environment
+- [OpenClaw](https://docs.openclaw.ai/install) installed (`openclaw` CLI available)
 
-## Install From This Repository
-
-Recommended for users right now:
+### Install
 
 ```bash
-git clone git@github.com:ImGoodBai/WeClawBot-ex.git
+git clone https://github.com/ImGoodBai/WeClawBot-ex.git
 cd WeClawBot-ex
-
 openclaw plugins install .
 ```
 
-OpenClaw also supports installing from a local checkout path:
+### Configure
 
-```bash
-openclaw plugins install /absolute/path/to/WeClawBot-ex
-```
-
-## Minimal OpenClaw Config
-
-Add or merge the following into your OpenClaw config:
+Add to your OpenClaw config (`openclaw config edit`):
 
 ```json
 {
@@ -57,47 +55,52 @@ Add or merge the following into your OpenClaw config:
       "baseUrl": "https://ilinkai.weixin.qq.com",
       "demoService": {
         "enabled": true,
-        "bind": "127.0.0.1",
-        "port": 19120,
-        "restartCommand": "openclaw gateway restart"
+        "port": 19120
       }
     }
   }
 }
 ```
 
-## Start Flow
+### Use
 
-1. Start your OpenClaw Gateway.
-2. Open `http://127.0.0.1:19120/`.
-3. Click `+ Add Weixin`.
-4. Scan the QR code in Weixin and confirm on phone.
-5. Restart Gateway after scan success.
-6. Send the first message from that Weixin account to establish `context_token`.
+1. Start your OpenClaw Gateway
+2. Open **http://127.0.0.1:19120/**
+3. Click **Add WeChat Channel** — scan the QR code with WeChat
+4. Restart Gateway after scan success
+5. Send a message from that WeChat account — your AI agent replies
 
-## User-Facing Notes
+Repeat step 3 for each additional WeChat account.
 
-- The web console is local-only by default: `http://127.0.0.1:19120/`
-- This MVP still requires a manual `openclaw gateway restart` after login
-- `-14` means the current Weixin bot session is cooling down; the page shows that state
-- One real Weixin account can accumulate multiple historical bot sessions after repeated re-login
+## How It Works
 
-## Local Control Page
+```
+WeChat User A ──┐
+WeChat User B ──┤──> WeClawBot-ex (multi-account plugin)
+WeChat User C ──┘         |
+                          |──> OpenClaw Agent
+                          |         |
+                          └──< Reply to each WeChat user
+```
 
-Endpoints exposed by the demo service:
+- Fork of the official `@tencent-weixin/openclaw-weixin` plugin (v1.0.2)
+- Extends the QR login module to support concurrent multi-session management
+- Adds a local web console (`src/service/`) for visual channel management
+- Each WeChat account gets isolated DM sessions — no cross-talk
 
-- `GET /`
-- `GET /api/health`
-- `POST /api/qr/create`
-- `GET /api/qr/:sessionKey/status`
-- `GET /api/accounts`
-- `POST /api/accounts/:accountId/relogin`
-- `GET /api/errors`
-- `POST /api/gateway/restart`
+## Roadmap
 
-## Current Limits
+- [ ] Group chat (@bot mode)
+- [ ] Media message support (images, files, voice)
+- [ ] Hot-reload after scan (no gateway restart)
+- [ ] Shareable QR codes for external distribution
 
-- This repo is a forked plugin, not an addon on top of the upstream package
-- The current public repo does not yet include Codex / Claude Code backend integration
-- Gateway restart is still manual
-- This project does not include `moltApp` billing, order, or settlement integration
+## WeChat Group
+
+Scan to join the project WeChat group:
+
+<img src="./docs/wechat-group-qr.jpg" alt="WeChat group QR" width="280" />
+
+## License
+
+MIT — see [LICENSE](./LICENSE) and [NOTICE](./NOTICE) for upstream attribution.
