@@ -6,6 +6,12 @@ Standalone Weixin gateway that reuses the readable Weixin protocol layer and con
 
 Scan Weixin QR -> Chat on Weixin -> Get Claude Code replies.
 
+## Demo
+
+Real chat effect on mobile Weixin:
+
+<img src="./docs/weixin-claude-demo.jpg" alt="Weixin Claude demo" width="320" />
+
 Current status:
 
 1. Claude Code backend is implemented and verified locally.

@@ -6,6 +6,12 @@
 
 微信扫码 -> 微信聊天 -> Claude Code 回复
 
+## 效果图
+
+这是当前手机微信端实际连上 Claude Code 后的聊天效果：
+
+<img src="./docs/weixin-claude-demo.jpg" alt="微信 Claude 效果图" width="320" />
+
 当前状态：
 
 1. Claude Code 后端已经实现并完成本地联调。
