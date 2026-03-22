@@ -20,7 +20,7 @@ Validate the shortest real loop:
 ## 3) First Login
 
 ```bash
-cd /Users/good/Documents/100agent/molthuman/wxclawbot-cc-codex
+cd /Users/good/Documents/100agent/molthuman/WeClawBot-ex
 npm run login
 ```
 
@@ -28,7 +28,7 @@ The command prints a QR code URL. Scan it in Weixin and wait until the CLI confi
 
 Saved state is written under:
 
-`~/.wxclawbot-cc-codex`
+`~/.weclawbot-ex`
 
 ## 4) Protocol-Only Check
 

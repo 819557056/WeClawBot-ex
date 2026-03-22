@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import { homedir } from "node:os";
 import path from "node:path";
 
@@ -12,7 +13,18 @@ export function resolveStateDir(overrideValue) {
     return path.resolve(process.env.WXCLAWBOT_STATE_DIR.trim());
   }
 
-  return path.join(homedir(), ".wxclawbot-cc-codex");
+  const nextDefaultDir = path.join(homedir(), ".weclawbot-ex");
+  const legacyDefaultDir = path.join(homedir(), ".wxclawbot-cc-codex");
+
+  if (fs.existsSync(nextDefaultDir)) {
+    return nextDefaultDir;
+  }
+
+  if (fs.existsSync(legacyDefaultDir)) {
+    return legacyDefaultDir;
+  }
+
+  return nextDefaultDir;
 }
 
 export function resolveAccountsDir(stateDir) {

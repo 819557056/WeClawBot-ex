@@ -1,10 +1,10 @@
-# wxclawbot-cc-codex MVP Plan
+# WeClawBot-ex MVP Plan
 
 ## 1) Project Background
 
 This project is a new standalone Node.js service under the workspace root:
 
-`/Users/good/Documents/100agent/molthuman/wxclawbot-cc-codex`
+`/Users/good/Documents/100agent/molthuman/WeClawBot-ex`
 
 It is intentionally independent from:
 
@@ -308,7 +308,7 @@ Do not reorder these steps.
 
 The first engineering batch must produce:
 
-1. a standalone Node.js project under `wxclawbot-cc-codex/`
+1. a standalone Node.js project under `WeClawBot-ex/`
 2. a CLI command that can start the local service
 3. a QR login flow
 4. per-account persisted state

@@ -1,11 +1,11 @@
 {
-  "name": "wxclawbot-cc-codex",
+  "name": "weclawbot-ex",
   "version": "0.0.1",
   "private": true,
-  "description": "Standalone Weixin gateway for Claude Code style backends",
+  "description": "Standalone Weixin gateway for Claude Code backends",
   "type": "module",
   "bin": {
-    "wxclawbot-cc-codex": "./src/cli.mjs"
+    "weclawbot-ex": "./src/cli.mjs"
   },
   "scripts": {
     "accounts": "node ./src/cli.mjs accounts",

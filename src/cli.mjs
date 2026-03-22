@@ -13,7 +13,7 @@ import { startWeixinLoginWithQr, waitForWeixinLogin } from "./weixin/auth/login-
 const logger = createLogger("cli");
 
 function printHelp() {
-  process.stdout.write(`wxclawbot-cc-codex
+  process.stdout.write(`weclawbot-ex
 
 Commands:
   login       Generate a Weixin QR flow and persist one linked account
@@ -185,7 +185,7 @@ async function runStart(options) {
   }
 
   if (accounts.length === 0) {
-    throw new Error("No saved accounts. Run `wxclawbot-cc-codex login` first.");
+    throw new Error("No saved accounts. Run `weclawbot-ex login` first.");
   }
 
   const routeTagOverride = getStringOption(options, "routeTag", "WXCLAWBOT_ROUTE_TAG", undefined);

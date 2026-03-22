@@ -1,19 +1,23 @@
-# WXClawbot-cc-codex
+# WeClawBot-ex
 
 [简体中文](./README.zh-CN.md)
 
-Standalone gateway built on [WeChat ClawBot](https://github.com/nicepkg/wechat-clawbot) protocol, extending it to support **Claude Code** as the AI backend.
+Standalone Weixin gateway that reuses the readable Weixin protocol layer and connects direct messages to **Claude Code**.
 
-Scan WeChat QR -> Chat on WeChat -> Get Claude Code replies.
+Scan Weixin QR -> Chat on Weixin -> Get Claude Code replies.
 
-> Extracts the WeChat ClawBot protocol layer, re-implemented as a standalone Node.js service. No ClawBot runtime dependency required.
+Current status:
 
-<!-- TODO: Add a demo screenshot here -->
+1. Claude Code backend is implemented and verified locally.
+2. Echo adapter is available for protocol-only testing.
+3. Codex is not implemented yet.
+
+This project does not depend on the OpenClaw runtime.
 
 ## Features
 
-- WeChat QR login with local account persistence
-- Direct text message receive/reply loop via WeChat
+- Weixin QR login with local account persistence
+- Direct text message receive/reply loop via Weixin
 - Claude Code as the AI backend (multi-turn session support)
 - Per-user persistent Claude sessions across restarts
 - Echo adapter for protocol-only testing
@@ -26,35 +30,35 @@ Scan WeChat QR -> Chat on WeChat -> Get Claude Code replies.
 - Node.js >= 22
 - [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed and authenticated
 
-### Install & Run
+### Install And Run
 
 ```bash
-git clone https://github.com/anthropics/wxclawbot-cc-codex.git
-cd wxclawbot-cc-codex
+git clone git@github.com:ImGoodBai/WeClawBot-ex.git
+cd WeClawBot-ex
 npm install
 
-# Step 1: Login — scan the QR code with WeChat
-npx wxclawbot-cc-codex login
+# Step 1: Login and scan the printed QR link in Weixin
+npm run login
 
-# Step 2: Start — messages from WeChat will be forwarded to Claude Code
-npx wxclawbot-cc-codex start --cwd /path/to/your/project
+# Step 2: Start the gateway
+npm run start -- --cwd /absolute/path/to/your/project
 ```
 
-That's it. Send a message on WeChat, Claude Code will reply.
+Then send a direct text message in Weixin. Claude Code will reply in the same conversation.
 
 ### Test without Claude (echo mode)
 
 ```bash
-npx wxclawbot-cc-codex start --adapter echo
+npm run start -- --adapter echo
 ```
 
 ## CLI Reference
 
 ```
 Commands:
-  login       Generate a WeChat QR and link one account
+  login       Generate a Weixin QR and link one account
   start       Start the gateway (forwards messages to Claude Code)
-  accounts    List saved WeChat accounts
+  accounts    List saved Weixin accounts
 
 Options:
   --adapter <claude|echo>     AI backend (default: claude)
@@ -68,24 +72,24 @@ Options:
 ## How It Works
 
 ```
-WeChat User
+Weixin User
     |
     v
-[WeChat ClawBot Protocol]
+[Reusable Weixin Protocol Layer]
     |
     v
-wxclawbot-cc-codex gateway (this project)
+WeClawBot-ex gateway (this project)
     |
     v
 Claude Code CLI (local)
     |
     v
-Reply back to WeChat
+Reply back to Weixin
 ```
 
-1. Reuses the WeChat ClawBot QR login and message protocol
-2. Runs as a standalone Node.js process — no ClawBot runtime needed
-3. Routes inbound WeChat messages to Claude Code via CLI
+1. Reuses the Weixin QR login and message protocol from readable source code
+2. Runs as a standalone Node.js process with no OpenClaw runtime dependency
+3. Routes inbound Weixin messages to Claude Code via CLI
 4. Returns Claude's response to the same WeChat conversation
 
 ## Roadmap
@@ -93,15 +97,15 @@ Reply back to WeChat
 - [ ] Codex backend adapter
 - [ ] Group chat (@bot mode)
 - [ ] Media message support
-- [ ] npm global install (`npm i -g wxclawbot-cc-codex`)
+- [ ] Publish or package a reusable install flow
 - [ ] Multi-account orchestration
 
 ## Environment Variables
 
 | Variable | Description |
 |----------|-------------|
-| `WXCLAWBOT_STATE_DIR` | State directory (default: `~/.wxclawbot-cc-codex`) |
-| `WXCLAWBOT_WEIXIN_BASE_URL` | WeChat API base URL |
+| `WXCLAWBOT_STATE_DIR` | State directory (default: `~/.weclawbot-ex`, legacy state auto-reused) |
+| `WXCLAWBOT_WEIXIN_BASE_URL` | Weixin API base URL |
 | `WXCLAWBOT_ROUTE_TAG` | Route tag override |
 | `WXCLAWBOT_WORKDIR` | Working directory for Claude Code |
 | `WXCLAWBOT_CLAUDE_BIN` | Claude CLI binary (default: `claude`) |

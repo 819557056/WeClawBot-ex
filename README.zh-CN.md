@@ -1,14 +1,18 @@
-# wxclawbot-cc-codex
+# WeClawBot-ex
 
 [English](./README.md)
 
-基于[微信小龙虾 (WeChat ClawBot)](https://github.com/nicepkg/wechat-clawbot) 协议层二次开发，扩展支持 **Claude Code** 作为 AI 后端的独立网关服务。
+这是一个独立的微信网关项目，复用可读的微信协议层，并把私聊消息接到 **Claude Code**。
 
 微信扫码 -> 微信聊天 -> Claude Code 回复
 
-> 提取微信小龙虾的协议层，重新实现为独立的 Node.js 服务，无需 ClawBot 运行时依赖。
+当前状态：
 
-<!-- TODO: 在这里放一张 demo 截图 -->
+1. Claude Code 后端已经实现并完成本地联调。
+2. Echo 适配器可用于纯协议链路测试。
+3. Codex 还没有实现。
+
+本项目不依赖 OpenClaw 运行时。
 
 ## 功能
 
@@ -29,15 +33,15 @@
 ### 安装运行
 
 ```bash
-git clone https://github.com/anthropics/wxclawbot-cc-codex.git
-cd wxclawbot-cc-codex
+git clone git@github.com:ImGoodBai/WeClawBot-ex.git
+cd WeClawBot-ex
 npm install
 
-# 第一步：登录 — 用微信扫描终端显示的二维码
-npx wxclawbot-cc-codex login
+# 第一步：登录，用微信扫描终端打印的二维码链接
+npm run login
 
-# 第二步：启动 — 微信消息将转发给 Claude Code
-npx wxclawbot-cc-codex start --cwd /path/to/your/project
+# 第二步：启动网关
+npm run start -- --cwd /absolute/path/to/your/project
 ```
 
 完成。在微信发消息，Claude Code 会回复。
@@ -45,7 +49,7 @@ npx wxclawbot-cc-codex start --cwd /path/to/your/project
 ### 不接 Claude 先测协议（echo 模式）
 
 ```bash
-npx wxclawbot-cc-codex start --adapter echo
+npm run start -- --adapter echo
 ```
 
 ## 命令参考
@@ -71,10 +75,10 @@ npx wxclawbot-cc-codex start --adapter echo
 微信用户
     |
     v
-[微信小龙虾协议层]
+[可复用微信协议层]
     |
     v
-wxclawbot-cc-codex 网关（本项目）
+WeClawBot-ex 网关（本项目）
     |
     v
 Claude Code CLI（本地）
@@ -83,8 +87,8 @@ Claude Code CLI（本地）
 回复到微信
 ```
 
-1. 复用微信小龙虾的扫码登录和消息协议
-2. 独立 Node.js 进程运行，不依赖 ClawBot 运行时
+1. 复用可读源码中的微信扫码登录和消息协议
+2. 独立 Node.js 进程运行，不依赖 OpenClaw 运行时
 3. 将微信消息通过 CLI 转发给 Claude Code
 4. 将 Claude 的回复发回同一个微信对话
 
@@ -93,14 +97,14 @@ Claude Code CLI（本地）
 - [ ] Codex 后端适配器
 - [ ] 群聊 @bot 模式
 - [ ] 媒体消息支持
-- [ ] npm 全局安装 (`npm i -g wxclawbot-cc-codex`)
+- [ ] 补齐统一安装或发布方式
 - [ ] 多账号管理
 
 ## 环境变量
 
 | 变量 | 说明 |
 |------|------|
-| `WXCLAWBOT_STATE_DIR` | 状态目录（默认: `~/.wxclawbot-cc-codex`） |
+| `WXCLAWBOT_STATE_DIR` | 状态目录（默认: `~/.weclawbot-ex`，旧状态目录会自动复用） |
 | `WXCLAWBOT_WEIXIN_BASE_URL` | 微信 API 地址 |
 | `WXCLAWBOT_ROUTE_TAG` | 路由标签 |
 | `WXCLAWBOT_WORKDIR` | Claude Code 工作目录 |
