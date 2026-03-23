@@ -1,5 +1,4 @@
 import type { ReplyPayload } from "openclaw/plugin-sdk";
-import { stripMarkdown } from "openclaw/plugin-sdk";
 
 import { sendMessage as sendMessageApi } from "../api/api.js";
 import type { WeixinApiOptions } from "../api/api.js";
@@ -8,6 +7,7 @@ import { generateId } from "../util/random.js";
 import type { MessageItem, SendMessageReq } from "../api/types.js";
 import { MessageItemType, MessageState, MessageType } from "../api/types.js";
 import type { UploadedFileInfo } from "../cdn/upload.js";
+import { stripMarkdown } from "./sdk-compat.js";
 
 function generateClientId(): string {
   return generateId("openclaw-weixin");

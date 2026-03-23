@@ -22,5 +22,6 @@ This project follows the [Keep a Changelog](https://keepachangelog.com/) format.
 - this release drops migration support for old shared-agent test data; reconnect old accounts if needed
 - install docs now describe zero-config startup plus a full configuration reference
 - compatibility fallback added for OpenClaw `2026.3.12+` plugin-sdk runtime differences
+- runtime hotfix completed for older OpenClaw builds that do not expose command-auth, typing, account-id, or markdown helpers on the root `plugin-sdk` entry
 - QR rendering now falls back cleanly when older runtimes cannot provide the PNG helper path
 - roadmap now includes stronger isolation and commercial distribution as explicit tracks

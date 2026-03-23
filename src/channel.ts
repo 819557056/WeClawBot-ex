@@ -1,7 +1,7 @@
 import path from "node:path";
 
 import type { ChannelPlugin, OpenClawConfig } from "openclaw/plugin-sdk";
-import { normalizeAccountId } from "openclaw/plugin-sdk";
+import { normalizeAccountId } from "openclaw/plugin-sdk/account-id";
 
 import {
   registerWeixinAccountId,

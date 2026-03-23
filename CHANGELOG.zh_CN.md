@@ -20,5 +20,6 @@
 - 本次版本不迁移旧共享模式测试数据；如有需要请重新扫码接入
 - 安装文档改成“零配置即可启动 + 完整配置参考表”
 - 增加了对 OpenClaw `2026.3.12+` 插件运行时差异的兼容兜底
+- 补齐了旧 OpenClaw runtime 下 root `plugin-sdk` 不暴露 command-auth、typing、account-id、markdown helper 时的运行时热修
 - 旧运行时下如果 PNG 二维码辅助不可用，二维码渲染会自动回退
 - 路线图新增“更强的隔离能力”和“商业化分发”两条主线

@@ -3,11 +3,6 @@ import path from "node:path";
 
 import type { PluginRuntime } from "openclaw/plugin-sdk";
 import {
-  createTypingCallbacks,
-  resolveDirectDmAuthorizationOutcome,
-  resolveSenderCommandAuthorizationWithRuntime,
-} from "openclaw/plugin-sdk";
-import {
   sendTyping,
 } from "../api/api.js";
 import type { WeixinMessage } from "../api/types.js";
@@ -31,6 +26,11 @@ import type { WeixinInboundMediaOpts } from "./inbound.js";
 import { sendWeixinMediaFile } from "./send-media.js";
 import { markdownToPlainText, sendMessageWeixin } from "./send.js";
 import { handleSlashCommand } from "./slash-commands.js";
+import {
+  createTypingCallbacks,
+  resolveDirectDmAuthorizationOutcome,
+  resolveSenderCommandAuthorizationWithRuntime,
+} from "./sdk-compat.js";
 
 let preferredTmpDirResolver: (() => string) | null = null;
 let preferredTmpDirResolved = false;
