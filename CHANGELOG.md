@@ -4,6 +4,13 @@
 
 This project follows the [Keep a Changelog](https://keepachangelog.com/) format.
 
+## [2026.3.24]
+
+### Changed
+
+- hardened runtime compatibility for OpenClaw `2026.3.14` by removing remaining root `plugin-sdk` runtime helper dependencies from the Weixin message pipeline
+- switched account-id and channel-config helpers to explicit plugin-sdk subpaths and added local compatibility shims for typing, command-auth, and markdown stripping
+
 ## [2026.3.23]
 
 ### Added

@@ -2,6 +2,13 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/) 格式。
 
+## [2026.3.24]
+
+### 变更
+
+- 针对 OpenClaw `2026.3.14` 进一步补强运行时兼容，移除了微信消息链路里残留的 root `plugin-sdk` 运行时 helper 依赖
+- 将 account-id 和 channel-config helper 切到明确子路径，并新增本地 typing、command-auth、markdown strip 兼容层
+
 ## [2026.3.23]
 
 ### 新增
