@@ -35,7 +35,7 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "openclaw": "^2026.3.14"
+    "openclaw": ">=2026.3.12"
   },
   "dependencies": {
     "qrcode-terminal": "0.12.0",

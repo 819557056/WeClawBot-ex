@@ -1,5 +1,5 @@
 import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
-import { buildChannelConfigSchema } from "openclaw/plugin-sdk/core";
+import { buildChannelConfigSchema } from "openclaw/plugin-sdk";
 
 import { weixinPlugin } from "./src/channel.js";
 import { WeixinDemoPluginConfigSchema } from "./src/config/config-schema.js";

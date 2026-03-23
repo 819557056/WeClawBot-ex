@@ -38,7 +38,7 @@ Older shared-agent test data is not migrated in this release. Reconnect old acco
 ### Prerequisites
 
 - Node.js >= 22
-- [OpenClaw](https://docs.openclaw.ai/install) installed (`openclaw` CLI available)
+- [OpenClaw](https://docs.openclaw.ai/install) `>= 2026.3.12` installed (`openclaw` CLI available)
 
 ### Install
 
@@ -47,6 +47,8 @@ git clone https://github.com/ImGoodBai/WeClawBot-ex.git
 cd WeClawBot-ex
 openclaw plugins install .
 ```
+
+If you previously installed the official `openclaw-weixin` plugin locally, remove or disable it before testing WeClawBot-ex. Both plugins currently register the same runtime channel id (`openclaw-weixin`), so loading both at once can cause channel conflicts.
 
 ### Naming
 
@@ -105,9 +107,11 @@ Repeat step 3 for each additional WeChat account.
 - `WARNING: Plugin "... contains dangerous code patterns"` is currently warn-only in OpenClaw. It is a scanner warning, not the install blocker.
 - `npm install failed` needs the full npm stderr before the root cause can be confirmed.
 - Check `node -v` first. This plugin requires Node.js `>= 22`.
-- Check `openclaw --version` next. Older OpenClaw builds may be incompatible with this plugin revision.
+- Check `openclaw --version` next. The current release targets OpenClaw `>= 2026.3.12`.
 - If the plugin installs but the console does not open, verify `channels.openclaw-weixin.demoService.enabled=true` and restart Gateway.
+- If the console still fails to boot, make sure the official `openclaw-weixin` plugin is not installed at the same time in the same OpenClaw profile.
 - If QR login succeeds but the new account does not receive messages, first wait for auto refresh, then use the manual restart command shown in the diagnostics panel.
+- If the QR image does not render as PNG on older runtimes, the console falls back to an SVG data URL automatically; this does not affect the login flow.
 
 ## Quality Gate
 

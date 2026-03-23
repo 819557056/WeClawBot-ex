@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { normalizeAccountId } from "openclaw/plugin-sdk/core";
+import { normalizeAccountId } from "openclaw/plugin-sdk";
 import type { OpenClawConfig } from "openclaw/plugin-sdk/core";
 
 import { getWeixinRuntime } from "../runtime.js";

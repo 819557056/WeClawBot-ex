@@ -20,3 +20,19 @@ export type ChannelPlugin<T = any> = {
   reload?: any;
 };
 
+export { buildChannelConfigSchema, normalizeAccountId } from "./core.js";
+
+export declare function createTypingCallbacks(...args: unknown[]): {
+  start: () => Promise<void>;
+  stop: () => Promise<void>;
+  keepalive: () => Promise<void>;
+};
+
+export declare function resolveDirectDmAuthorizationOutcome(...args: unknown[]): string;
+
+export declare function resolveSenderCommandAuthorizationWithRuntime(...args: unknown[]): Promise<{
+  senderAllowedForCommands: boolean;
+  commandAuthorized: boolean;
+}>;
+
+export declare function stripMarkdown(text: string): string;

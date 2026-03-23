@@ -34,7 +34,7 @@ WeClawBot-ex 是基于官方 `@tencent-weixin/openclaw-weixin` 的产品化 fork
 ### 前置条件
 
 - Node.js >= 22
-- 已安装 [OpenClaw](https://docs.openclaw.ai/install)（`openclaw` 命令可用）
+- 已安装 [OpenClaw](https://docs.openclaw.ai/install) `>= 2026.3.12`（`openclaw` 命令可用）
 
 ### 安装
 
@@ -43,6 +43,8 @@ git clone https://github.com/ImGoodBai/WeClawBot-ex.git
 cd WeClawBot-ex
 openclaw plugins install .
 ```
+
+如果你本地之前已经装过官方 `openclaw-weixin` 插件，测试 WeClawBot-ex 前请先移除或禁用它。当前两个插件仍然共用同一个运行时 channel id（`openclaw-weixin`），同时加载会发生 channel 冲突。
 
 ### 命名说明
 
@@ -101,9 +103,11 @@ openclaw gateway
 - `WARNING: Plugin "... contains dangerous code patterns"` 当前在 OpenClaw 里只是告警，不会因为这条扫描提示直接拦截安装。
 - 如果看到 `npm install failed`，必须拿到完整 npm stderr 才能确认根因。
 - 先检查 `node -v`。当前插件要求 Node.js `>= 22`。
-- 再检查 `openclaw --version`。过旧的 OpenClaw 版本可能和当前插件不兼容。
+- 再检查 `openclaw --version`。当前版本目标兼容范围是 OpenClaw `>= 2026.3.12`。
 - 如果插件安装成功但管理端没起来，先确认 `channels.openclaw-weixin.demoService.enabled=true`，然后重启 Gateway。
+- 如果管理端还是起不来，再确认本地没有同时安装官方 `openclaw-weixin` 插件。
 - 如果扫码已经成功，但新账号还是收不到消息，先等自动刷新完成；还不行再使用诊断面板里的手动重启命令。
+- 如果旧运行时上 PNG 二维码渲染不可用，控制台会自动退回到 SVG data URL，这不影响扫码登录流程。
 
 ## 质量门
 

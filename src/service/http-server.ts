@@ -1,6 +1,6 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 
-import { normalizeAccountId } from "openclaw/plugin-sdk/core";
+import { normalizeAccountId } from "openclaw/plugin-sdk";
 import type { PluginLogger } from "openclaw/plugin-sdk/core";
 
 import {
@@ -133,7 +133,7 @@ export class WeixinDemoHttpServer {
           message: result.message,
           sessionKey: result.sessionKey,
           qrcodeUrl: result.qrcodeUrl,
-          qrImageDataUrl: result.qrcodeUrl ? renderQrImageDataUrl(result.qrcodeUrl) : undefined,
+          qrImageDataUrl: result.qrcodeUrl ? await renderQrImageDataUrl(result.qrcodeUrl) : undefined,
           status: snapshot?.status ?? "waiting",
           expiresAt: snapshot?.expiresAt,
         });
@@ -163,13 +163,13 @@ export class WeixinDemoHttpServer {
             ...result,
             binding,
             activation: binding.activation,
-            qrImageDataUrl: result.qrcodeUrl ? renderQrImageDataUrl(result.qrcodeUrl) : undefined,
+            qrImageDataUrl: result.qrcodeUrl ? await renderQrImageDataUrl(result.qrcodeUrl) : undefined,
           });
           return;
         }
         this.respondJson(res, 200, {
           ...result,
-          qrImageDataUrl: result.qrcodeUrl ? renderQrImageDataUrl(result.qrcodeUrl) : undefined,
+          qrImageDataUrl: result.qrcodeUrl ? await renderQrImageDataUrl(result.qrcodeUrl) : undefined,
         });
         return;
       }
@@ -197,7 +197,7 @@ export class WeixinDemoHttpServer {
           message: result.message,
           sessionKey: result.sessionKey,
           qrcodeUrl: result.qrcodeUrl,
-          qrImageDataUrl: result.qrcodeUrl ? renderQrImageDataUrl(result.qrcodeUrl) : undefined,
+          qrImageDataUrl: result.qrcodeUrl ? await renderQrImageDataUrl(result.qrcodeUrl) : undefined,
           status: snapshot?.status ?? "waiting",
         });
         return;

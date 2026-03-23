@@ -1,14 +1,15 @@
+import os from "node:os";
 import path from "node:path";
 
-import { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/infra-runtime";
 import type { PluginRuntime } from "openclaw/plugin-sdk";
-import { createTypingCallbacks } from "../../../../src/channels/typing.js";
 import {
+  createTypingCallbacks,
   resolveDirectDmAuthorizationOutcome,
   resolveSenderCommandAuthorizationWithRuntime,
-} from "../../../../src/plugin-sdk/command-auth.js";
-
-import { sendTyping } from "../api/api.js";
+} from "openclaw/plugin-sdk";
+import {
+  sendTyping,
+} from "../api/api.js";
 import type { WeixinMessage } from "../api/types.js";
 import { MessageItemType, TypingStatus } from "../api/types.js";
 import { loadWeixinAccount } from "../auth/accounts.js";
@@ -31,7 +32,25 @@ import { sendWeixinMediaFile } from "./send-media.js";
 import { markdownToPlainText, sendMessageWeixin } from "./send.js";
 import { handleSlashCommand } from "./slash-commands.js";
 
-const MEDIA_OUTBOUND_TEMP_DIR = path.join(resolvePreferredOpenClawTmpDir(), "weixin/media/outbound-temp");
+let preferredTmpDirResolver: (() => string) | null = null;
+let preferredTmpDirResolved = false;
+
+async function resolvePreferredTmpDirCompat(): Promise<string> {
+  if (!preferredTmpDirResolved) {
+    preferredTmpDirResolved = true;
+    try {
+      const mod = await import("openclaw/plugin-sdk/infra-runtime");
+      preferredTmpDirResolver = mod.resolvePreferredOpenClawTmpDir;
+    } catch {
+      preferredTmpDirResolver = () => path.join(os.tmpdir(), "openclaw");
+    }
+  }
+  return (preferredTmpDirResolver ?? (() => path.join(os.tmpdir(), "openclaw")))();
+}
+
+async function resolveMediaOutboundTempDir(): Promise<string> {
+  return path.join(await resolvePreferredTmpDirCompat(), "weixin/media/outbound-temp");
+}
 
 /** Dependencies for processOneMessage, injected by the monitor loop. */
 export type ProcessMessageDeps = {
@@ -339,7 +358,10 @@ export async function processOneMessage(
               logger.debug(`outbound: local file path resolved filePath=${filePath}`);
             } else if (mediaUrl.startsWith("http://") || mediaUrl.startsWith("https://")) {
               logger.debug(`outbound: downloading remote mediaUrl=${mediaUrl.slice(0, 80)}...`);
-              filePath = await downloadRemoteImageToTemp(mediaUrl, MEDIA_OUTBOUND_TEMP_DIR);
+              filePath = await downloadRemoteImageToTemp(
+                mediaUrl,
+                await resolveMediaOutboundTempDir(),
+              );
               logger.debug(`outbound: remote image downloaded to filePath=${filePath}`);
             } else {
               logger.warn(
