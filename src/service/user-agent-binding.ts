@@ -145,6 +145,17 @@ function touchChannelReloadNonce(config: Record<string, unknown>): void {
   };
 }
 
+function ensureSafeDmScope(config: Record<string, unknown>): void {
+  const session = ensureObject(config.session);
+  const current = typeof session.dmScope === "string" ? session.dmScope.trim() : "";
+  if (!current || current === "main") {
+    config.session = {
+      ...session,
+      dmScope: "per-account-channel-peer",
+    };
+  }
+}
+
 async function withFileLock<T>(filePath: string, task: () => Promise<T> | T): Promise<T> {
   const lockPath = `${filePath}.lock`;
 
@@ -339,6 +350,7 @@ export function getWeixinUserAgentBinding(params: {
     fallback: false,
     configPath: resolveConfigPath(),
     mapPath: resolveUserAgentMapPath(),
+    activation: buildAutoActivationResult(resolveConfigPath(), false),
   };
 }
 
@@ -380,6 +392,7 @@ export async function resolveOrRegisterWeixinUserAgent(params: {
     const currentActivation = buildAutoActivationResult(configPath, true);
 
     if (!currentBindingConfig.enabled) {
+      ensureSafeDmScope(currentConfig);
       touchChannelReloadNonce(currentConfig);
       writeJsonAtomic(configPath, currentConfig);
       return {
@@ -397,6 +410,7 @@ export async function resolveOrRegisterWeixinUserAgent(params: {
     }
 
     if (!trimmedUserId) {
+      ensureSafeDmScope(currentConfig);
       touchChannelReloadNonce(currentConfig);
       writeJsonAtomic(configPath, currentConfig);
       return {
@@ -415,6 +429,7 @@ export async function resolveOrRegisterWeixinUserAgent(params: {
 
     const existing = map.users[trimmedUserId];
     if (!existing && Object.keys(map.users).length >= currentBindingConfig.maxAgents) {
+      ensureSafeDmScope(currentConfig);
       touchChannelReloadNonce(currentConfig);
       writeJsonAtomic(configPath, currentConfig);
       return {
@@ -447,6 +462,7 @@ export async function resolveOrRegisterWeixinUserAgent(params: {
       previousAccountId,
       agentId,
     });
+    ensureSafeDmScope(currentConfig);
     touchChannelReloadNonce(currentConfig);
     writeJsonAtomic(configPath, currentConfig);
 

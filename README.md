@@ -14,7 +14,7 @@ WeClawBot-ex is a productized fork of the official `@tencent-weixin/openclaw-wei
 | QR login experience | Terminal output | Browser QR with live status cards |
 | Account visibility | Mainly logs and local state | Aggregated dashboard and relogin actions |
 | Cooldown diagnostics | Manual inspection | Built-in `-14` visibility |
-| Session isolation | Requires manual `dmScope` configuration | Explicitly guides `per-account-channel-peer` |
+| Session isolation | Requires manual `dmScope` configuration | Auto-upgrades to `per-account-channel-peer` on first bind |
 
 ## Current Status
 
@@ -69,7 +69,7 @@ Then open **http://127.0.0.1:19120/**.
 
 ### Recommended Config
 
-If you want to pin the isolation mode explicitly, add this to your OpenClaw config:
+Zero-config startup is supported. If you want to pin the behavior explicitly, add this to your OpenClaw config:
 
 ```json
 {
@@ -85,6 +85,28 @@ If you want to pin the isolation mode explicitly, add this to your OpenClaw conf
   }
 }
 ```
+
+### Configuration Reference
+
+Plugin config lives under `channels.openclaw-weixin` in `openclaw.json`.
+
+| Field | Type | Default | Description |
+|---|---|---|---|
+| `agentBinding.enabled` | `boolean` | `true` | Enable one-WeChat-one-agent binding |
+| `agentBinding.maxAgents` | `number` | `20` | Dedicated agent limit; new users fall back to `main` after the limit |
+| `demoService.enabled` | `boolean` | `true` | Start the local Web console |
+| `demoService.port` | `number` | `19120` | Console port |
+| `demoService.bind` | `string` | `127.0.0.1` | Console bind address |
+| `demoService.restartCommand` | `string` | `openclaw gateway restart` | Manual restart command shown in diagnostics |
+| `baseUrl` | `string` | `https://ilinkai.weixin.qq.com` | Weixin iLink API endpoint |
+| `cdnBaseUrl` | `string` | `https://novac2c.cdn.weixin.qq.com/c2c` | Media CDN endpoint |
+| `logUploadUrl` | `string` | `-` | Optional log upload endpoint |
+
+Gateway-level config lives at the root of `openclaw.json`.
+
+| Field | Type | Default | Description |
+|---|---|---|---|
+| `session.dmScope` | `string` | Auto-set to `per-account-channel-peer` | Direct-message isolation mode; normally no manual change is needed |
 
 ### Use
 

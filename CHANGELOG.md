@@ -13,10 +13,12 @@ This project follows the [Keep a Changelog](https://keepachangelog.com/) format.
 - architecture and FAQ docs for official-plugin relationship and isolation boundary
 - default one-WeChat-one-agent binding with `userId -> agentId` mapping and dedicated-agent registration
 - dedicated binding unit and smoke coverage for `agents.list` + `bindings` writes
+- automatic `dmScope` upgrade to `per-account-channel-peer` during first bind
 
 ### Changed
 
 - README wording now correctly states that the upstream plugin already has multi-account runtime foundations
 - public docs now explain default one-WeChat-one-agent behavior and shared-agent fallback
 - this release drops migration support for old shared-agent test data; reconnect old accounts if needed
+- install docs now describe zero-config startup plus a full configuration reference
 - roadmap now includes stronger isolation and commercial distribution as explicit tracks

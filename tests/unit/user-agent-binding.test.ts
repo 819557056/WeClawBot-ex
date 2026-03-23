@@ -59,6 +59,9 @@ describe("user-agent binding", () => {
     expect(agentIds).toContain(result.agentId);
     expect(binding?.match?.channel).toBe("openclaw-weixin");
     expect(binding?.agentId).toBe(result.agentId);
+    expect((updated as { session?: { dmScope?: string } }).session?.dmScope).toBe(
+      "per-account-channel-peer",
+    );
   });
 
   it("keeps the same agent when the same user logs in again", async () => {
@@ -99,5 +102,37 @@ describe("user-agent binding", () => {
     expect(result.mode).toBe("shared");
     expect(result.fallback).toBe(true);
     expect(result.agentId).toBe("main");
+  });
+
+  it("auto-upgrades dmScope when config starts in main mode", async () => {
+    env.cleanup();
+    env = createTempOpenClawEnv({
+      session: {
+        dmScope: "main",
+      },
+      agents: {
+        list: [{ id: "main" }],
+      },
+      channels: {
+        "openclaw-weixin": {
+          demoService: {
+            enabled: true,
+            bind: "127.0.0.1",
+            port: 19120,
+            restartCommand: "openclaw gateway restart",
+          },
+        },
+      },
+    });
+
+    await resolveOrRegisterWeixinUserAgent({
+      userId: "wx-user-b",
+      accountId: "bot-b-im-bot",
+    });
+
+    const updated = JSON.parse(fs.readFileSync(env.configPath, "utf-8")) as {
+      session?: { dmScope?: string };
+    };
+    expect(updated.session?.dmScope).toBe("per-account-channel-peer");
   });
 });

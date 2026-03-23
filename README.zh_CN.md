@@ -14,7 +14,7 @@ WeClawBot-ex 是基于官方 `@tencent-weixin/openclaw-weixin` 的产品化 fork
 | 扫码体验 | 终端输出 | 浏览器二维码 + 实时状态卡片 |
 | 账号状态可观测 | 主要靠日志和本地状态 | 面板聚合展示 + 重扫入口 |
 | 冷却诊断 | 需手动排查 | 内置 `-14` 冷却可见 |
-| 会话隔离 | 需手动配置 `dmScope` | 明确推荐 `per-account-channel-peer` |
+| 会话隔离 | 需手动配置 `dmScope` | 首次绑定时自动升级到 `per-account-channel-peer` |
 
 ## 当前版本能力
 
@@ -65,7 +65,7 @@ openclaw gateway
 
 ### 推荐配置
 
-如果你希望把隔离模式显式写死，再补下面这段：
+默认零配置即可启动。如果你希望把行为显式写死，再补下面这段：
 
 ```json
 {
@@ -81,6 +81,28 @@ openclaw gateway
   }
 }
 ```
+
+### 配置参考
+
+插件级配置写在 `openclaw.json` 的 `channels.openclaw-weixin` 下。
+
+| 字段 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `agentBinding.enabled` | `boolean` | `true` | 是否启用一微信一 agent |
+| `agentBinding.maxAgents` | `number` | `20` | 独立 agent 上限，超过后新用户回落到 `main` |
+| `demoService.enabled` | `boolean` | `true` | 是否启动本地 Web 控制台 |
+| `demoService.port` | `number` | `19120` | 控制台端口 |
+| `demoService.bind` | `string` | `127.0.0.1` | 控制台绑定地址 |
+| `demoService.restartCommand` | `string` | `openclaw gateway restart` | 诊断面板显示的手动重启命令 |
+| `baseUrl` | `string` | `https://ilinkai.weixin.qq.com` | 微信 iLink API 地址 |
+| `cdnBaseUrl` | `string` | `https://novac2c.cdn.weixin.qq.com/c2c` | 媒体 CDN 地址 |
+| `logUploadUrl` | `string` | `-` | 可选日志上传地址 |
+
+Gateway 级配置写在 `openclaw.json` 顶层。
+
+| 字段 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `session.dmScope` | `string` | 自动设为 `per-account-channel-peer` | 私聊会话隔离级别，正常情况下不需要手动修改 |
 
 ### 使用
 
