@@ -161,6 +161,27 @@ npm run test:gate:full
 - 兜底：只有在独立绑定失败时才退回共享 `main`
 - 后续：更彻底的 workspace / tools / runtime 隔离
 
+## 独立 Agent 效果演示
+
+下面这两张图是两个不同手机微信接入同一个 龙虾机器人Gateway 的实际效果。它们分别绑定到了不同的独立 agent，因此工作区、身份信息和记忆都是分开的。
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="./docs/weclawbot-ex-wechat-agent-a.jpg" alt="手机微信 A 绑定独立 agent" width="280" />
+      <div><strong>手机 A -> Agent A</strong></div>
+      <div>工作区：<code>/Users/good/.openclaw/workspace-wx-09c653a7</code></div>
+      <div>身份和记忆只保留在自己的 agent 上。</div>
+    </td>
+    <td align="center" width="50%">
+      <img src="./docs/weclawbot-ex-wechat-agent-b.png" alt="手机微信 B 绑定独立 agent" width="280" />
+      <div><strong>手机 B -> Agent B</strong></div>
+      <div>工作区：<code>/Users/good/.openclaw/workspace-wx-847277d3</code></div>
+      <div>名字、记忆和工作上下文与手机 A 完全分开。</div>
+    </td>
+  </tr>
+</table>
+
 ## 维护边界
 
 - 上游协议层和运行层视为冻结

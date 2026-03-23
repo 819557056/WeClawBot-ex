@@ -165,6 +165,27 @@ If you are specifically evaluating data isolation, read [docs/architecture.md](.
 - compatibility fallback: shared `main` agent only when dedicated binding cannot be completed
 - future stage: stronger workspace/tool/runtime isolation
 
+## Dedicated Agent Demo
+
+The two screenshots below show two different phones connected to the same Gateway, but mapped to different dedicated agents and different workspaces.
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="./docs/weclawbot-ex-wechat-agent-a.jpg" alt="WeChat phone A bound to its own agent" width="280" />
+      <div><strong>Phone A -> Agent A</strong></div>
+      <div>Workspace: <code>/Users/good/.openclaw/workspace-wx-09c653a7</code></div>
+      <div>Identity and memory stay on its own agent.</div>
+    </td>
+    <td align="center" width="50%">
+      <img src="./docs/weclawbot-ex-wechat-agent-b.png" alt="WeChat phone B bound to its own agent" width="280" />
+      <div><strong>Phone B -> Agent B</strong></div>
+      <div>Workspace: <code>/Users/good/.openclaw/workspace-wx-847277d3</code></div>
+      <div>Name, memory, and working context are separated from Phone A.</div>
+    </td>
+  </tr>
+</table>
+
 ## Maintenance Boundary
 
 - The upstream protocol/runtime layer is treated as frozen
