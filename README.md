@@ -4,18 +4,7 @@
 
 Multi-account management layer for **WeChat ClawBot** (the official WeChat AI bot plugin by Tencent).
 
-WeClawBot-ex is a productized fork of the official `@tencent-weixin/openclaw-weixin` plugin. The upstream plugin already has the runtime foundation for multiple account sessions; WeClawBot-ex adds a local web console, QR login management, channel diagnostics, and a distribution-friendly operator workflow.
-
-## What This Adds Over the Official ClawBot
-
-| | Official `openclaw-weixin` | WeClawBot-ex |
-|---|---|---|
-| Multi-account runtime | Supported, mainly via CLI workflow | Supported, with one local web console |
-| Agent mapping | Shared/manual operator setup | Default one WeChat -> one dedicated agent |
-| QR login experience | Terminal output | Browser QR with live status cards |
-| Account visibility | Mainly logs and local state | Aggregated dashboard and relogin actions |
-| Cooldown diagnostics | Manual inspection | Built-in `-14` visibility |
-| Chat isolation | Requires extra manual configuration | Enabled by default |
+WeClawBot-ex is a productized fork of the official `@tencent-weixin/openclaw-weixin` plugin. It turns the upstream multi-account runtime into a visual, operator-friendly WeChat console.
 
 ## Current Status
 
@@ -32,6 +21,27 @@ Older shared-agent test data is not migrated in this release. Reconnect old acco
 ## Console Preview
 
 <img src="./docs/weclawbot-ex-console-preview.png" alt="WeClawBot-ex console preview" width="980" />
+
+## Dedicated Agent Demo
+
+Two phones, one Gateway, two dedicated agents.
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="./docs/weclawbot-ex-wechat-agent-a.jpg" alt="WeChat phone A bound to its own agent" width="280" />
+      <div><strong>Phone A -> Agent A</strong></div>
+      <div><code>workspace-wx-09c653a7</code></div>
+      <div>Own identity, own memory.</div>
+    </td>
+    <td align="center" width="50%">
+      <img src="./docs/weclawbot-ex-wechat-agent-b.png" alt="WeChat phone B bound to its own agent" width="280" />
+      <div><strong>Phone B -> Agent B</strong></div>
+      <div><code>workspace-wx-847277d3</code></div>
+      <div>Separate from Phone A.</div>
+    </td>
+  </tr>
+</table>
 
 ## Quick Start
 
@@ -165,26 +175,16 @@ If you are specifically evaluating data isolation, read [docs/architecture.md](.
 - compatibility fallback: shared `main` agent only when dedicated binding cannot be completed
 - future stage: stronger workspace/tool/runtime isolation
 
-## Dedicated Agent Demo
+## What This Adds Over the Official ClawBot
 
-The two screenshots below show two different phones connected to the same Gateway, but mapped to different dedicated agents and different workspaces.
-
-<table>
-  <tr>
-    <td align="center" width="50%">
-      <img src="./docs/weclawbot-ex-wechat-agent-a.jpg" alt="WeChat phone A bound to its own agent" width="280" />
-      <div><strong>Phone A -> Agent A</strong></div>
-      <div>Workspace: <code>/Users/good/.openclaw/workspace-wx-09c653a7</code></div>
-      <div>Identity and memory stay on its own agent.</div>
-    </td>
-    <td align="center" width="50%">
-      <img src="./docs/weclawbot-ex-wechat-agent-b.png" alt="WeChat phone B bound to its own agent" width="280" />
-      <div><strong>Phone B -> Agent B</strong></div>
-      <div>Workspace: <code>/Users/good/.openclaw/workspace-wx-847277d3</code></div>
-      <div>Name, memory, and working context are separated from Phone A.</div>
-    </td>
-  </tr>
-</table>
+| | Official `openclaw-weixin` | WeClawBot-ex |
+|---|---|---|
+| Multi-account runtime | Supported, mainly via CLI workflow | Supported, with one local web console |
+| Agent mapping | Shared/manual operator setup | Default one WeChat -> one dedicated agent |
+| QR login experience | Terminal output | Browser QR with live status cards |
+| Account visibility | Mainly logs and local state | Aggregated dashboard and relogin actions |
+| Cooldown diagnostics | Manual inspection | Built-in `-14` visibility |
+| Chat isolation | Requires extra manual configuration | Enabled by default |
 
 ## Maintenance Boundary
 

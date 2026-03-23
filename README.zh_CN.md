@@ -4,18 +4,7 @@
 
 **微信 ClawBot 多账号管理增强层** — 让微信 ClawBot 更适合多微信接入、统一管理和后续对外分发。
 
-WeClawBot-ex 是基于官方 `@tencent-weixin/openclaw-weixin` 的产品化 fork。官方插件底层已经有多账号运行骨架；WeClawBot-ex 主要补上本地 Web 控制台、二维码登录管理、渠道诊断和更适合运营/分发的工作流。
-
-## 相比官方 ClawBot 增加了什么
-
-| | 官方 `openclaw-weixin` | WeClawBot-ex |
-|---|---|---|
-| 多账号运行 | 底层支持，主要通过 CLI | 支持，并提供统一 Web 控制台 |
-| Agent 绑定 | 主要靠人工约定或共享模式 | 默认一微信对应一个独立 agent |
-| 扫码体验 | 终端输出 | 浏览器二维码 + 实时状态卡片 |
-| 账号状态可观测 | 主要靠日志和本地状态 | 面板聚合展示 + 重扫入口 |
-| 冷却诊断 | 需手动排查 | 内置 `-14` 冷却可见 |
-| 聊天隔离 | 需要额外手动配置 | 默认开启 |
+WeClawBot-ex 是基于官方 `@tencent-weixin/openclaw-weixin` 的产品化 fork，把官方已有的多账号运行骨架做成了可视化、可管理的微信控制台。
 
 ## 当前版本能力
 
@@ -28,6 +17,31 @@ WeClawBot-ex 是基于官方 `@tencent-weixin/openclaw-weixin` 的产品化 fork
 - 扫码确认后自动触发 channel reload，失败时再手动重启兜底
 
 本次版本不处理旧共享模式测试数据迁移。如果你是从早期私有版本升级，建议直接重新扫码接入。
+
+## 软件演示
+
+<img src="./docs/weclawbot-ex-console-preview.png" alt="WeClawBot-ex 控制台预览" width="980" />
+
+## 独立 Agent 效果演示
+
+下面这两张图是两个不同手机微信接入同一个龙虾机器人Gateway的实际效果。它们分别绑定到了不同的独立agent，因此工作区、身份信息和记忆都是分开的。
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="./docs/weclawbot-ex-wechat-agent-a.jpg" alt="手机微信 A 绑定独立 agent" width="280" />
+      <div><strong>手机 A -> Agent A</strong></div>
+      <div><code>workspace-wx-09c653a7</code></div>
+      <div>身份和记忆各自独立。</div>
+    </td>
+    <td align="center" width="50%">
+      <img src="./docs/weclawbot-ex-wechat-agent-b.png" alt="手机微信 B 绑定独立 agent" width="280" />
+      <div><strong>手机 B -> Agent B</strong></div>
+      <div><code>workspace-wx-847277d3</code></div>
+      <div>与手机 A 完全分开。</div>
+    </td>
+  </tr>
+</table>
 
 ## 快速开始
 
@@ -161,26 +175,16 @@ npm run test:gate:full
 - 兜底：只有在独立绑定失败时才退回共享 `main`
 - 后续：更彻底的 workspace / tools / runtime 隔离
 
-## 独立 Agent 效果演示
+## 相比官方 ClawBot 增加了什么
 
-下面这两张图是两个不同手机微信接入同一个 龙虾机器人Gateway 的实际效果。它们分别绑定到了不同的独立 agent，因此工作区、身份信息和记忆都是分开的。
-
-<table>
-  <tr>
-    <td align="center" width="50%">
-      <img src="./docs/weclawbot-ex-wechat-agent-a.jpg" alt="手机微信 A 绑定独立 agent" width="280" />
-      <div><strong>手机 A -> Agent A</strong></div>
-      <div>工作区：<code>/Users/good/.openclaw/workspace-wx-09c653a7</code></div>
-      <div>身份和记忆只保留在自己的 agent 上。</div>
-    </td>
-    <td align="center" width="50%">
-      <img src="./docs/weclawbot-ex-wechat-agent-b.png" alt="手机微信 B 绑定独立 agent" width="280" />
-      <div><strong>手机 B -> Agent B</strong></div>
-      <div>工作区：<code>/Users/good/.openclaw/workspace-wx-847277d3</code></div>
-      <div>名字、记忆和工作上下文与手机 A 完全分开。</div>
-    </td>
-  </tr>
-</table>
+| | 官方 `openclaw-weixin` | WeClawBot-ex |
+|---|---|---|
+| 多账号运行 | 底层支持，主要通过 CLI | 支持，并提供统一 Web 控制台 |
+| Agent 绑定 | 主要靠人工约定或共享模式 | 默认一微信对应一个独立 agent |
+| 扫码体验 | 终端输出 | 浏览器二维码 + 实时状态卡片 |
+| 账号状态可观测 | 主要靠日志和本地状态 | 面板聚合展示 + 重扫入口 |
+| 冷却诊断 | 需手动排查 | 内置 `-14` 冷却可见 |
+| 聊天隔离 | 需要额外手动配置 | 默认开启 |
 
 ## 维护边界
 
