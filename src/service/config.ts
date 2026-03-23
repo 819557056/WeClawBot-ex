@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-import type { OpenClawConfig } from "openclaw/plugin-sdk/core";
+import type { OpenClawConfig } from "openclaw/plugin-sdk";
 
 export type WeixinDemoServiceConfig = {
   enabled: boolean;

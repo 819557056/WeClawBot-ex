@@ -18,6 +18,18 @@ The current public release supports:
 
 Older shared-agent test data is not migrated in this release. Reconnect old accounts if you are upgrading from an earlier private build.
 
+## Recent Changes (Compatibility)
+
+This repo recently added a compatibility-focused update around OpenClaw SDK integration:
+
+- SDK imports are now aligned to `openclaw/plugin-sdk` (instead of mixed deep paths) across entry, service, and messaging modules.
+- Plugin entry now uses a defensive `configSchema` resolver:
+  - uses `buildChannelConfigSchema` when available
+  - falls back to Zod-like `toJSONSchema()` when present
+  - finally falls back to a permissive object schema to keep plugin loading stable
+- QR code rendering in the local console was changed from runtime PNG pixel encoding to SVG data URLs, reducing dependence on `media-runtime` internals.
+- Added unit coverage for plugin-entry SDK compatibility fallback (`tests/unit/plugin-entry.compat.test.ts`) and expanded plugin-sdk test stubs.
+
 ## Console Preview
 
 <img src="./docs/weclawbot-ex-console-preview.png" alt="WeClawBot-ex console preview" width="980" />

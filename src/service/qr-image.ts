@@ -14,39 +14,6 @@ type QRCodeConstructor = new (
 const QRCode = QRCodeModule as QRCodeConstructor;
 const QRErrorCorrectLevel = QRErrorCorrectLevelModule;
 
-type MediaRuntimeCompat = {
-  encodePngRgba: (buf: Buffer, width: number, height: number) => Buffer;
-  fillPixel: (
-    buf: Buffer,
-    x: number,
-    y: number,
-    width: number,
-    r: number,
-    g: number,
-    b: number,
-    a: number,
-  ) => void;
-};
-
-let mediaRuntimeCompat: MediaRuntimeCompat | null = null;
-let mediaRuntimeLoadAttempted = false;
-
-async function loadMediaRuntimeCompat(): Promise<MediaRuntimeCompat | null> {
-  if (!mediaRuntimeLoadAttempted) {
-    mediaRuntimeLoadAttempted = true;
-    try {
-      const mod = await import("openclaw/plugin-sdk/media-runtime");
-      mediaRuntimeCompat = {
-        encodePngRgba: mod.encodePngRgba,
-        fillPixel: mod.fillPixel,
-      };
-    } catch {
-      mediaRuntimeCompat = null;
-    }
-  }
-  return mediaRuntimeCompat;
-}
-
 export async function renderQrImageDataUrl(
   input: string,
   opts: { scale?: number; marginModules?: number } = {},
@@ -58,45 +25,17 @@ export async function renderQrImageDataUrl(
 
   const modules = qr.getModuleCount();
   const size = (modules + marginModules * 2) * scale;
-
-  const mediaRuntime = await loadMediaRuntimeCompat();
-  if (!mediaRuntime) {
-    const rects: string[] = [];
-    for (let row = 0; row < modules; row += 1) {
-      for (let col = 0; col < modules; col += 1) {
-        if (!qr.isDark(row, col)) {
-          continue;
-        }
-        const x = (col + marginModules) * scale;
-        const y = (row + marginModules) * scale;
-        rects.push(`<rect x="${x}" y="${y}" width="${scale}" height="${scale}" fill="#000"/>`);
-      }
-    }
-    const svg =
-      `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges">` +
-      `<rect width="${size}" height="${size}" fill="#fff"/>` +
-      rects.join("") +
-      `</svg>`;
-    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
-  }
-
-  const buf = Buffer.alloc(size * size * 4, 255);
+  const rects: string[] = [];
 
   for (let row = 0; row < modules; row += 1) {
     for (let col = 0; col < modules; col += 1) {
-      if (!qr.isDark(row, col)) {
-        continue;
-      }
-      const startX = (col + marginModules) * scale;
-      const startY = (row + marginModules) * scale;
-      for (let y = 0; y < scale; y += 1) {
-        for (let x = 0; x < scale; x += 1) {
-          mediaRuntime.fillPixel(buf, startX + x, startY + y, size, 0, 0, 0, 255);
-        }
-      }
+      if (!qr.isDark(row, col)) continue;
+      const x = (col + marginModules) * scale;
+      const y = (row + marginModules) * scale;
+      rects.push(`<rect x="${x}" y="${y}" width="${scale}" height="${scale}"/>`);
     }
   }
 
-  const png = mediaRuntime.encodePngRgba(buf, size, size);
-  return `data:image/png;base64,${png.toString("base64")}`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="white"/> <g fill="black">${rects.join("")}</g></svg>`;
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`;
 }

@@ -7,9 +7,7 @@ import {
   resolveDirectDmAuthorizationOutcome,
   resolveSenderCommandAuthorizationWithRuntime,
 } from "openclaw/plugin-sdk";
-import {
-  sendTyping,
-} from "../api/api.js";
+import { sendTyping } from "../api/api.js";
 import type { WeixinMessage } from "../api/types.js";
 import { MessageItemType, TypingStatus } from "../api/types.js";
 import { loadWeixinAccount } from "../auth/accounts.js";
@@ -55,7 +53,7 @@ async function resolveMediaOutboundTempDir(): Promise<string> {
 /** Dependencies for processOneMessage, injected by the monitor loop. */
 export type ProcessMessageDeps = {
   accountId: string;
-  config: import("openclaw/plugin-sdk/core").OpenClawConfig;
+  config: import("openclaw/plugin-sdk").OpenClawConfig;
   channelRuntime: PluginRuntime["channel"];
   baseUrl: string;
   cdnBaseUrl: string;

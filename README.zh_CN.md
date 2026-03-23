@@ -43,6 +43,18 @@ WeClawBot-ex 是基于官方 `@tencent-weixin/openclaw-weixin` 的产品化 fork
   </tr>
 </table>
 
+## 最近改动（兼容性）
+
+本仓库近期补充了一组以 OpenClaw SDK 兼容性为核心的更新：
+
+- 入口、service、messaging 等模块统一改为从 `openclaw/plugin-sdk` 导入，减少深层路径混用。
+- 插件入口的 `configSchema` 增加了防御式解析逻辑：
+  - 优先使用 `buildChannelConfigSchema`
+  - 不可用时回退到类 Zod 的 `toJSONSchema()`
+  - 再不可用时回退为宽松对象 schema，保证插件可加载
+- 本地控制台二维码渲染由运行时 PNG 像素编码切换为 SVG data URL，降低对 `media-runtime` 内部实现的依赖。
+- 新增插件入口 SDK 兼容回退单测（`tests/unit/plugin-entry.compat.test.ts`），并补齐 plugin-sdk 测试桩能力。
+
 ## 快速开始
 
 ### 前置条件

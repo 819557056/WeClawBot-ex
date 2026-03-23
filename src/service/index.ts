@@ -1,4 +1,4 @@
-import type { OpenClawPluginApi, OpenClawPluginService } from "openclaw/plugin-sdk/core";
+import type { OpenClawPluginApi, OpenClawPluginService } from "openclaw/plugin-sdk";
 
 import { WeixinDemoHttpServer } from "./http-server.js";
 import { detectOfficialWeixinPluginConflict, resolveWeixinDemoServiceConfig } from "./config.js";

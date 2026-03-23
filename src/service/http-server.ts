@@ -1,7 +1,7 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 
 import { normalizeAccountId } from "openclaw/plugin-sdk";
-import type { PluginLogger } from "openclaw/plugin-sdk/core";
+import type { OpenClawConfig, PluginLogger } from "openclaw/plugin-sdk";
 
 import {
   DEFAULT_BASE_URL,
@@ -28,12 +28,12 @@ import { resolveOrRegisterWeixinUserAgent } from "./user-agent-binding.js";
 
 type HttpServerDeps = {
   logger: PluginLogger;
-  config: import("openclaw/plugin-sdk/core").OpenClawConfig;
+  config: OpenClawConfig;
 };
 
 export class WeixinDemoHttpServer {
   private readonly logger: PluginLogger;
-  private readonly config: import("openclaw/plugin-sdk/core").OpenClawConfig;
+  private readonly config: OpenClawConfig;
   private readonly serviceConfig: WeixinDemoServiceConfig;
   private server: Server | null = null;
 

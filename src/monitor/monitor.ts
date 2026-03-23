@@ -22,7 +22,7 @@ export type MonitorWeixinOpts = {
   accountId: string;
   /** When non-empty, only messages whose from_user_id is in this list are processed. */
   allowFrom?: string[];
-  config: import("openclaw/plugin-sdk/core").OpenClawConfig;
+  config: import("openclaw/plugin-sdk").OpenClawConfig;
   runtime?: { log?: (msg: string) => void; error?: (msg: string) => void };
   abortSignal?: AbortSignal;
   longPollTimeoutMs?: number;

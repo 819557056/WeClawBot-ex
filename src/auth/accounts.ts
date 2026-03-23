@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { normalizeAccountId } from "openclaw/plugin-sdk";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/core";
+import type { OpenClawConfig } from "openclaw/plugin-sdk";
 
 import { getWeixinRuntime } from "../runtime.js";
 import { resolveStateDir } from "../storage/state-dir.js";

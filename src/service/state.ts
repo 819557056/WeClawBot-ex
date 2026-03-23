@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 
-import type { OpenClawConfig } from "openclaw/plugin-sdk/core";
+import type { OpenClawConfig } from "openclaw/plugin-sdk";
 
 import {
   listIndexedWeixinAccountIds,
