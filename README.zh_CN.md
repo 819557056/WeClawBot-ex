@@ -46,6 +46,13 @@ openclaw plugins install .
 
 如果你本地之前已经装过官方 `openclaw-weixin` 插件，测试 WeClawBot-ex 前请先移除或禁用它。当前两个插件仍然共用同一个运行时 channel id（`openclaw-weixin`），同时加载会发生 channel 冲突。
 
+同一个 OpenClaw profile 里，建议保持下面这种状态：
+
+- `plugins.entries.molthuman-oc-plugin-wx.enabled = true`
+- `plugins.entries.openclaw-weixin.enabled = false`
+
+如果你确实要两边都保留，请拆到不同的 profile / 不同的 `OPENCLAW_STATE_DIR`。
+
 ### 命名说明
 
 当前版本为了兼容运行时，仍然保留下面这几套标识：
@@ -104,6 +111,7 @@ openclaw gateway
 - 如果看到 `npm install failed`，必须拿到完整 npm stderr 才能确认根因。
 - 先检查 `node -v`。当前插件要求 Node.js `>= 22`。
 - 再检查 `openclaw --version`。当前版本目标兼容范围是 OpenClaw `>= 2026.3.12`。
+- 如果你刚从 GitHub 拉了新代码，还要重新执行一次 `openclaw plugins install .`。OpenClaw 实际运行的是 `~/.openclaw/extensions` 里的已安装副本，不是当前工作目录。
 - 如果插件安装成功但管理端没起来，先确认 `channels.openclaw-weixin.demoService.enabled=true`，然后重启 Gateway。
 - 如果管理端还是起不来，再确认本地没有同时安装官方 `openclaw-weixin` 插件。
 - 如果扫码已经成功，但新账号还是收不到消息，先等自动刷新完成；还不行再使用诊断面板里的手动重启命令。

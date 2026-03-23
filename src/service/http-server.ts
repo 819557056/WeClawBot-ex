@@ -16,7 +16,11 @@ import {
   pollWeixinLoginStatusOnce,
   startWeixinLoginWithQr,
 } from "../auth/login-qr.js";
-import { resolveWeixinDemoServiceConfig, type WeixinDemoServiceConfig } from "./config.js";
+import {
+  detectOfficialWeixinPluginConflict,
+  resolveWeixinDemoServiceConfig,
+  type WeixinDemoServiceConfig,
+} from "./config.js";
 import { renderDemoPage } from "./page.js";
 import { renderQrImageDataUrl } from "./qr-image.js";
 import { buildDemoAccountsSnapshot, listRecentDemoErrors } from "./state.js";
@@ -86,6 +90,7 @@ export class WeixinDemoHttpServer {
       if (req.method === "GET" && url.pathname === "/api/health") {
         const snapshot = buildDemoAccountsSnapshot(this.config);
         const reload = getWeixinChannelReloadStatus();
+        const pluginConflict = detectOfficialWeixinPluginConflict(this.config);
         this.respondJson(res, 200, {
           ok: true,
           gateway: {
@@ -103,6 +108,12 @@ export class WeixinDemoHttpServer {
             bind: this.serviceConfig.bind,
             port: this.serviceConfig.port,
             pageUrl: `http://${this.serviceConfig.bind}:${this.serviceConfig.port}/`,
+          },
+          pluginConflict: {
+            conflict: pluginConflict.conflict,
+            officialPluginEnabled: pluginConflict.officialPluginEnabled,
+            officialPluginInstalled: pluginConflict.officialPluginInstalled,
+            message: pluginConflict.message,
           },
           restart: {
             mode: reload.mode,

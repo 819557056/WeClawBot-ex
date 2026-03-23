@@ -99,4 +99,34 @@ describe("demo account snapshot", () => {
     expect(snapshot.diagnostics.some((item) => item.kind === "cooldown")).toBe(true);
     expect(snapshot.diagnostics.some((item) => item.kind === "missing-user-id")).toBe(true);
   });
+
+  it("emits a diagnostic when the official plugin is still enabled in the same profile", () => {
+    const officialInstallPath = path.join(env.stateDir, "extensions", "openclaw-weixin");
+    fs.mkdirSync(officialInstallPath, { recursive: true });
+
+    const snapshot = buildDemoAccountsSnapshot({
+      channels: {
+        "openclaw-weixin": {
+          agentBinding: {
+            enabled: true,
+            maxAgents: 20,
+          },
+        },
+      },
+      plugins: {
+        entries: {
+          "openclaw-weixin": {
+            enabled: true,
+          },
+        },
+        installs: {
+          "openclaw-weixin": {
+            installPath: officialInstallPath,
+          },
+        },
+      },
+    } as never);
+
+    expect(snapshot.diagnostics.some((item) => item.kind === "plugin-conflict")).toBe(true);
+  });
 });

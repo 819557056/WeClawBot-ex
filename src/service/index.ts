@@ -1,7 +1,7 @@
 import type { OpenClawPluginApi, OpenClawPluginService } from "openclaw/plugin-sdk/core";
 
 import { WeixinDemoHttpServer } from "./http-server.js";
-import { resolveWeixinDemoServiceConfig } from "./config.js";
+import { detectOfficialWeixinPluginConflict, resolveWeixinDemoServiceConfig } from "./config.js";
 
 export function createWeixinDemoService(_api: OpenClawPluginApi): OpenClawPluginService {
   let server: WeixinDemoHttpServer | null = null;
@@ -10,9 +10,13 @@ export function createWeixinDemoService(_api: OpenClawPluginApi): OpenClawPlugin
     id: "molthuman-oc-plugin-wx-demo-service",
     start: async (ctx) => {
       const config = resolveWeixinDemoServiceConfig(ctx.config);
+      const conflict = detectOfficialWeixinPluginConflict(ctx.config);
       if (!config.enabled) {
         ctx.logger.info("[WeClawBot-ex] demo service disabled by config");
         return;
+      }
+      if (conflict.conflict && conflict.message) {
+        ctx.logger.warn(`[WeClawBot-ex] ${conflict.message}`);
       }
       server = new WeixinDemoHttpServer({
         logger: ctx.logger,

@@ -11,6 +11,7 @@ import {
   getWeixinUserAgentBinding,
   resolveWeixinAgentBindingConfig,
 } from "./user-agent-binding.js";
+import { detectOfficialWeixinPluginConflict } from "./config.js";
 import { logger } from "../util/logger.js";
 
 export type DemoAccountRecord = {
@@ -48,7 +49,7 @@ export type DemoChannelSummary = {
 };
 
 export type DemoDiagnosticItem = {
-  kind: "cooldown" | "duplicate" | "missing-user-id" | "session-scope";
+  kind: "cooldown" | "duplicate" | "missing-user-id" | "session-scope" | "plugin-conflict";
   severity: "danger" | "warn" | "info";
   title: string;
   message: string;
@@ -170,6 +171,7 @@ export function buildDemoAccountsSnapshot(cfg?: OpenClawConfig): DemoAccountsSna
   const records = buildAccountRecords();
   const isolation = buildIsolationState(cfg);
   const agentBinding = resolveWeixinAgentBindingConfig(cfg);
+  const pluginConflict = cfg ? detectOfficialWeixinPluginConflict(cfg) : { conflict: false };
   const grouped = new Map<string, DemoAccountRecord[]>();
 
   for (const record of records) {
@@ -220,6 +222,16 @@ export function buildDemoAccountsSnapshot(cfg?: OpenClawConfig): DemoAccountsSna
       severity: "danger",
       title: "Shared main session mode",
       message: `Direct messages currently share one main agent session (dmScope=${isolation.dmScope}). Use per-account-channel-peer before running multiple Weixin accounts in one Gateway.`,
+    });
+  }
+
+  if (pluginConflict.conflict) {
+    diagnostics.push({
+      kind: "plugin-conflict",
+      severity: "danger",
+      title: "Official plugin conflict detected",
+      message:
+        "Official openclaw-weixin is still enabled in this OpenClaw profile. Disable it before using WeClawBot-ex in the same profile, or use a separate OPENCLAW_STATE_DIR.",
     });
   }
 

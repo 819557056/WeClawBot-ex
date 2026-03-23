@@ -50,6 +50,13 @@ openclaw plugins install .
 
 If you previously installed the official `openclaw-weixin` plugin locally, remove or disable it before testing WeClawBot-ex. Both plugins currently register the same runtime channel id (`openclaw-weixin`), so loading both at once can cause channel conflicts.
 
+In the same OpenClaw profile, the recommended state is:
+
+- `plugins.entries.molthuman-oc-plugin-wx.enabled = true`
+- `plugins.entries.openclaw-weixin.enabled = false`
+
+If you want both plugins available, keep them in separate profiles / separate `OPENCLAW_STATE_DIR` values.
+
 ### Naming
 
 For compatibility, the current release still uses these runtime identifiers:
@@ -108,6 +115,7 @@ Repeat step 3 for each additional WeChat account.
 - `npm install failed` needs the full npm stderr before the root cause can be confirmed.
 - Check `node -v` first. This plugin requires Node.js `>= 22`.
 - Check `openclaw --version` next. The current release targets OpenClaw `>= 2026.3.12`.
+- After pulling a newer GitHub revision, run `openclaw plugins install .` again. OpenClaw runs the installed copy under `~/.openclaw/extensions`, not your working tree directly.
 - If the plugin installs but the console does not open, verify `channels.openclaw-weixin.demoService.enabled=true` and restart Gateway.
 - If the console still fails to boot, make sure the official `openclaw-weixin` plugin is not installed at the same time in the same OpenClaw profile.
 - If QR login succeeds but the new account does not receive messages, first wait for auto refresh, then use the manual restart command shown in the diagnostics panel.
